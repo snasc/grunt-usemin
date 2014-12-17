@@ -124,7 +124,7 @@ module.exports = function (grunt) {
 
     // var locator = options.revmap ? grunt.file.readJSON(options.revmap) : function (p) { return grunt.file.expand({filter: 'isFile'}, p); };
     var locator = getLocator(grunt, options);
-    var revvedfinder = new RevvedFinder(locator);
+    var revvedfinder = new RevvedFinder(locator, options.z_root);
     var handler = new FileProcessor(patterns, revvedfinder, function (msg) {
       grunt.verbose.writeln(msg);
     }, blockReplacements);
