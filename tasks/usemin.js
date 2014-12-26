@@ -134,6 +134,7 @@ module.exports = function (grunt) {
         nonull: true,
         filter: 'isFile'
       }, fileObj.src);
+      var fileModified = 0;
       files.forEach(function (filename) {
         debug('looking at file %s', filename);
 
@@ -142,14 +143,18 @@ module.exports = function (grunt) {
         // Our revved version locator
         var content = handler.process(filename, options.assetsDirs);
 
-        // write the new content to disk
-        grunt.file.write(filename, content);
+        if (handler.isFileModified) {
+          // write the new content to disk
+          grunt.file.write(filename, content);
+          fileModified++;
+        }
 
       });
 
       grunt.log.writeln('Replaced ' + chalk.cyan(files.length) + ' ' +
         (files.length === 1 ? 'reference' : 'references') + ' to assets'
       );
+      grunt.log.writeln('Real changed ' + chalk.cyan(fileModified) + ' file' + (fileModified > 1 ? 's' : '') + '.');
     });
   });
 
